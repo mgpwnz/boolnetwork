@@ -1,6 +1,7 @@
 #!/bin/bash
 # Default variables
 function="install"
+bool_data_dir="$HOME/.bool-data"
 # Options
 option_value(){ echo "$1" | sed -e 's%^--[^=]*=%%g; s%^-[^=]*=%%g'; }
 while test $# -gt 0; do
@@ -72,8 +73,10 @@ volumes:
 EOF
 sleep 2
 #create data
-mkdir $HOME/.bool-data
-chown -R 1000:1000 $HOME/.bool-data
+if [ ! -d "$bool_data_dir" ]; then
+    mkdir -p "$bool_data_dir"
+    chown -R 1000:1000 "$bool_data_dir"
+fi
 #docker run
 docker compose -f $HOME/bool-network/docker-compose.yml up -d
 }
