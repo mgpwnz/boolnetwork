@@ -24,7 +24,6 @@ read -p "Node Name : " BOOLNAME
 cd
 touch $HOME/.bash_profile
 if ! docker --version; then
-		echo -e "${C_LGn}Docker installation...${RES}"
 		sudo apt update
 		sudo apt upgrade -y
 		sudo apt install curl apt-transport-https ca-certificates gnupg lsb-release -y
@@ -37,7 +36,6 @@ if ! docker --version; then
 		sudo apt install docker-ce="$docker_version" docker-ce-cli="$docker_version" containerd.io -y
 	fi
 	if ! docker-compose --version; then
-		echo -e "${C_LGn}Docker Сompose installation...${RES}"
 		sudo apt update
 		sudo apt upgrade -y
 		sudo apt install wget jq -y
