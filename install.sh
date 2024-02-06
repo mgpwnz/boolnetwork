@@ -75,11 +75,11 @@ sleep 2
 mkdir $HOME/.bool-data
 chown -R 1000:1000 $HOME/.bool-data
 #docker run
-docker compose up -f $HOME/bool-network/docker-compose.yml -d
+docker compose -f $HOME/bool-network/docker-compose.yml up -d
 }
 uninstall() {
 
-docker compose down -f $HOME/bool-network/docker-compose.yml -v
+docker compose -f $HOME/bool-network/docker-compose.yml down -v
 sudo rm -rf $HOME/bool-network/ 
 echo "Done"
 cd
