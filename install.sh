@@ -63,7 +63,7 @@ services:
       --in-peers=1000
       --name=$BOOLNAME
     ports:
-    - '30333:30333'
+    - '34333:30333'
     volumes:
     - $HOME/.bool-data:/bool/.local/share/bnk-node
 volumes:
