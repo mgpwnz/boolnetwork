@@ -81,7 +81,7 @@ services:
       --chain alpha_testnet
     ports:
       - 9944:9944
-      - 30433:30333
+      - 30633:30333
 
 EOF
 sleep 2
