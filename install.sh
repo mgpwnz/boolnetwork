@@ -80,7 +80,7 @@ services:
       --ethapi=debug,trace,txpool
       --chain alpha_testnet
     ports:
-      - 9944:9944
+      - 9844:9944
       - 30633:30333
 
 EOF
