@@ -91,8 +91,7 @@ docker compose -f $HOME/bool-testnode/docker-compose.yml up -d
 uninstall() {
 
 docker compose -f $HOME/bool-testnode/docker-compose.yml down -v
-sudo rm -rf $HOME/bool-testnode/
-echo "Done"
+echo "remove dir manual"
 cd
 }
 # Actions
