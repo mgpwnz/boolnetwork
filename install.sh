@@ -20,7 +20,11 @@ while test $# -gt 0; do
 	esac
 done
 install() {
-read -p "Node Name : " BOOLNAME
+#old ver
+if [  -d $HOME/bool-network ]; then
+  docker compose -f $HOME/bool-network/docker-compose.yml down -v
+  sudo rm -rf $HOME/bool-network/
+fi 
 #docker install
 cd
 touch $HOME/.bash_profile
@@ -47,43 +51,47 @@ touch $HOME/.bash_profile
 	fi
 cd $HOME
 #create dir and config
-mkdir $HOME/bool-network/
-
+mkdir -p bool-testnode/node-data
+chmod 777 $HOME/bool-testnode/node-data
 # Create script 
-tee $HOME/bool-network/docker-compose.yml > /dev/null <<EOF
-version: "3.7"
-name: bool
-
+tee $HOME/bool-testnode/docker-compose.yml > /dev/null <<EOF
+version: "3"
 services:
-  validator:
-    image: boolnetwork/bnk-node:release
+  bnk-node1:
+    image: boolnetwork/bnk-node:pre-release
     restart: always
+    environment:
+      RUST_LOG: info
+    volumes:
+    - "./node-data:/data"
     command: |
       --validator
-      --chain=tee
-      --in-peers=1000
-      --name=$BOOLNAME
+      --bootnodes /ip4/20.81.161.179/tcp/30333/ws/p2p/12D3KooWEA2uNEDyYq5Rzb1PW5TX7g6pF24s7r9c9ikQhAfUh9x1
+      --enable-offchain-indexing true
+      --rpc-methods Unsafe
+      --unsafe-rpc-external
+      --rpc-cors all
+      --rpc-max-connections 100000
+      --pool-limit 100000
+      --pool-kbytes 2048000
+      --tx-ban-seconds 600
+      --blocks-pruning=archive
+      --state-pruning=archive
+      --ethapi=debug,trace,txpool
+      --chain alpha_testnet
     ports:
-    - '34333:30333'
-    volumes:
-    - $HOME/.bool-data:/bool/.local/share/bnk-node
-volumes:
-  data:
+      - 9944:9944
+      - 30433:30333
 
 EOF
 sleep 2
-#create data
-if [ ! -d "$bool_data_dir" ]; then
-    mkdir -p "$bool_data_dir"
-    chown -R 1000:1000 "$bool_data_dir"
-fi
 #docker run
-docker compose -f $HOME/bool-network/docker-compose.yml up -d
+docker compose -f $HOME/bool-testnode/docker-compose.yml up -d
 }
 uninstall() {
 
-docker compose -f $HOME/bool-network/docker-compose.yml down -v
-sudo rm -rf $HOME/bool-network/ 
+docker compose -f $HOME/bool-testnode/docker-compose.yml down -v
+sudo rm -rf $HOME/bool-testnode/
 echo "Done"
 cd
 }
